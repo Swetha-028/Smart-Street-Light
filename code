@@ -1,0 +1,41 @@
+#define BLYNK_PRINT Serial
+#include <ESP8266WiFi.h>
+#include <BlynkSimpleEsp9266.h>
+
+#define BLYNK_TEMPLATE_ID "TMPL3mTbqiJ_r";
+#define BLYNK_TEMPLATE_NAME "Street light"
+#define BLYNK_AUTH_TOKEN "exvr6uHJQiLEoSfHNnGs11DshuH1M1oB"
+
+ char auth[]="exvr6uHJQiLEoSfHNnGs11DshuH1M1oB";
+ const char* ssid="CEMS_New";
+ const char* pass="SKILLS@CEMS";
+
+int ir=D1;
+int ldr=D2;
+int load=D8;
+void setup()
+{
+Serial.begin(9600);
+pinMode(ir,INPUT);
+pinMode(ldr,INPUT);
+pinMode(load,OUTPUT);
+Blynk.begin(auth,ssid,pass,"blynk.cloud",80);
+}
+void loop()
+{
+  Blynk.run();
+  int a=digitalRead(ir);
+  int b=digitalRead(ldr);
+  Serial.println(a);
+   Serial.println(b);
+  if (a==0 && b==1)
+  {
+    Blynk.virtualWrite(V1,"lights are on");
+    digialWrite(load,HIGH);
+  }
+  else
+  {
+    digitalWrite(load,LOW);
+     Blynk.virtualWrite(V1,"lights are off");
+  }
+}
